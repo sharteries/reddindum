@@ -49,3 +49,4 @@ client.modhash = j['json']['data']['modhash']
 
 # for testing, let's make sure it works
 print '{user}\'s modhash is totes: {mh}'.format(user=user, mh=client.modhash)
+print '\n\nYou\'re all logged in!\n\n'
