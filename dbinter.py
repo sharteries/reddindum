@@ -27,7 +27,7 @@ c.execute('''CREATE TABLE if not exists threads
 # 'comment text'  : the actual comment itself
 
 c.execute('''create table if not exists comments
-		(thread text, comment text)''')
+		(thread text, parent_id text, comment_id text unique, comment text)''')
 
 
 ##### SO, something to note, here, is that I'm not closing the connection to the db.
@@ -40,8 +40,8 @@ def insert_thread(custom, thread, unread, comcount):
 	connection.commit()
 
 # same for comments
-def insert_comment(thread, comment):
-	c.execute("insert into comments values (?,?);",(thread, comment))
+def insert_comment(thread, parent_id, comment_id, comment):
+	c.execute("insert or ignore into comments values (?,?,?,?);",(thread, parent_id, comment_id, comment))
 	connection.commit()
 
 # show all the threads you have
@@ -52,3 +52,8 @@ def print_thread():
 #### I haven't written a print for comments yet, due to the sheer size that it could be.
 #### That, and there may not be a direct need to ever do this, as such data, for now, should
 #### never be called en masse anyway; only accessed for analytics.
+
+#### NEVERMIND, AAAAHAHAHAHAHA
+def print_comments():
+	for row in c.execute('select * from comments'):
+		print(row)
